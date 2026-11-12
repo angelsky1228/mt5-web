@@ -10,7 +10,6 @@ import {
   IconCircleCheck, 
   IconCircleX, 
   IconDownload,
-  IconFileSpreadsheet,
   IconFileText
 } from "@tabler/icons-react";
 import { 
@@ -21,7 +20,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel 
 } from "@/components/ui/shadcn/dropdown-menu";
-import { getLiabilityPersonWiseReport, getLiabilitySummaryReport } from "@/services/liabilityService";
+import {
+  exportLiabilityPersonWiseReport,
+  getLiabilityPersonWiseReport,
+  getLiabilitySummaryReport,
+} from "@/services/liabilityService";
 import type { LiabilityPersonWiseReportRow, LiabilitySummaryReport } from "@/types/liability";
 import { getApiErrorMessage } from "@/lib/apiError";
 import { toast } from "sonner";
@@ -36,6 +39,7 @@ import {
   liabilitySideFromSigned,
 } from "@/lib/liabilityDisplay";
 import { useFormatMoney } from "@/hooks/useFormatMoney";
+import { useExport } from "@/hooks/useExport";
 import type { LiabilityBalanceSide } from "@/types/liability";
 
 export function LiabilityReportClient() {
@@ -76,6 +80,16 @@ export function LiabilityReportClient() {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const { exporting, handleExport } = useExport(
+    (params) => exportLiabilityPersonWiseReport(params),
+    { fileName: "liability-person-wise-report.xlsx" },
+  );
+
+  const onExportExcel = () => {
+    // Full backend person-wise set (not UI search-filtered rows)
+    handleExport({ viewMode: "platform" });
   };
 
   return (
@@ -154,13 +168,17 @@ export function LiabilityReportClient() {
                 <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuLabel className="" inset={false}>Choose Format</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => { /* Implement Excel export for summary if backend supports it */ }} className="cursor-pointer opacity-50 cursor-not-allowed">
-                    <IconFileSpreadsheet className="mr-2 h-4 w-4 text-emerald-600" />
-                    <span>Excel (Coming soon)</span>
+                  <DropdownMenuItem
+                    onClick={onExportExcel}
+                    disabled={exporting}
+                    className="cursor-pointer"
+                  >
+                    <IconDownload className="mr-2 h-4 w-4 text-emerald-600" />
+                    <span>{exporting ? "Exporting…" : "Excel (.xlsx)"}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={handlePrint} className="cursor-pointer">
                     <IconFileText className="mr-2 h-4 w-4 text-rose-600" />
-                    <span>PDF Report (.pdf)</span>
+                    <span>Print / PDF</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

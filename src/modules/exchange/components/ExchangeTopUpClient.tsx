@@ -2,15 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { IconCheck, IconFilter, IconRefresh, IconDownload, IconFileSpreadsheet, IconFileText } from "@tabler/icons-react";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel 
-} from "@/components/ui/shadcn/dropdown-menu";
+import { IconCheck, IconFilter, IconRefresh, IconDownload } from "@tabler/icons-react";
 import { AutocompleteField, type AutocompleteOption } from "@/components/common/AutocompleteField";
 import { FieldLabel } from "@/components/common/FieldLabel";
 import { Button } from "@/components/ui/Button";
@@ -193,29 +185,14 @@ export function ExchangeTopUpClient() {
           >
             Refresh
           </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="secondary"
-                loading={exporting}
-                startIcon={<IconDownload size={18} />}
-              >
-                Export
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
-              <DropdownMenuLabel className="" inset={false}>Choose Format</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={onExportClick} className="cursor-pointer">
-                <IconFileSpreadsheet className="mr-2 h-4 w-4 text-emerald-600" />
-                <span>Excel (.xlsx)</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => window.print()} className="cursor-pointer">
-                <IconFileText className="mr-2 h-4 w-4 text-rose-600" />
-                <span>PDF Report (.pdf)</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button
+            variant="secondary"
+            loading={exporting}
+            startIcon={<IconDownload size={18} />}
+            onClick={onExportClick}
+          >
+            Export Excel
+          </Button>
           {currentBalance != null ? (
             <div className="ml-auto text-sm text-slate-700">
               Current Balance: <span className="font-semibold">{formatAmount(currentBalance)}</span>

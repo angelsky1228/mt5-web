@@ -13,8 +13,6 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconDownload,
-  IconFileSpreadsheet,
-  IconFileText,
   IconFilter,
   IconSearch,
   IconX,
@@ -23,14 +21,6 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { FieldLabel } from "@/components/common/FieldLabel";
 import { AutocompleteField, type AutocompleteOption } from "@/components/common/AutocompleteField";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/shadcn/dropdown-menu";
 import { DATE_PRESETS } from "@/modules/dashboard/components/DashboardFilterBar";
 import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { cn } from "@/lib/cn";
@@ -82,7 +72,6 @@ type Props = {
   exportButtonLabel?: string;
   onExportClick?: () => void;
   exportDisabled?: boolean;
-  onPrintClick?: () => void;
 };
 
 export function LiabilityEntryFilterPanel({
@@ -95,7 +84,6 @@ export function LiabilityEntryFilterPanel({
   exportButtonLabel = "Export",
   onExportClick,
   exportDisabled = false,
-  onPrintClick,
 }: Props) {
   const [open, setOpen] = useState(defaultOpen);
   const [quickSearch, setQuickSearch] = useState(q);
@@ -281,37 +269,17 @@ export function LiabilityEntryFilterPanel({
         </div>
 
         {onExportClick ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                type="button"
-                variant="secondary"
-                size="sm"
-                className="h-9 shrink-0"
-                disabled={exportDisabled}
-                startIcon={<IconDownload size={16} stroke={1.5} />}
-              >
-                {exportButtonLabel}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuLabel className="" inset={false}>
-                Choose Format
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={onExportClick} className="cursor-pointer">
-                <IconFileSpreadsheet className="mr-2 h-4 w-4 text-emerald-600" />
-                <span>Excel (.xlsx)</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={onPrintClick || (() => window.print())}
-                className="cursor-pointer"
-              >
-                <IconFileText className="mr-2 h-4 w-4 text-rose-600" />
-                <span>PDF Report (.pdf)</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            className="h-9 shrink-0"
+            disabled={exportDisabled}
+            startIcon={<IconDownload size={16} stroke={1.5} />}
+            onClick={onExportClick}
+          >
+            {exportButtonLabel}
+          </Button>
         ) : null}
       </div>
 

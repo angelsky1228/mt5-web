@@ -1,14 +1,6 @@
 import { PropsWithChildren, ReactNode } from "react";
-import { IconPlus, IconDownload, IconUpload, IconFileSpreadsheet, IconFileText } from "@tabler/icons-react";
+import { IconPlus, IconDownload, IconUpload } from "@tabler/icons-react";
 import { cn } from "@/lib/cn";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel 
-} from "@/components/ui/shadcn/dropdown-menu";
 import { Button } from "@/components/ui/Button";
 
 type Props = PropsWithChildren<{
@@ -24,7 +16,6 @@ type Props = PropsWithChildren<{
   onAddClick?: () => void;
   exportButtonLabel?: string;
   onExportClick?: () => void;
-  onPrintClick?: () => void;
   exportDisabled?: boolean;
   importButtonLabel?: string;
   onImportClick?: () => void;
@@ -44,7 +35,6 @@ export function ListingPageContainer({
   onAddClick,
   exportButtonLabel,
   onExportClick,
-  onPrintClick,
   exportDisabled = false,
   importButtonLabel,
   onImportClick,
@@ -68,33 +58,16 @@ export function ListingPageContainer({
         </Button>
       )}
       {onExportClick && exportButtonLabel && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled={exportDisabled}
-              startIcon={<IconDownload />}
-            >
-              {exportButtonLabel}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel className="" inset={false}>Choose Format</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={onExportClick} className="cursor-pointer">
-              <IconFileSpreadsheet className="mr-2 h-4 w-4 text-emerald-600" />
-              <span>Excel (.xlsx)</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              onClick={onPrintClick || (() => window.print())} 
-              className="cursor-pointer"
-            >
-              <IconFileText className="mr-2 h-4 w-4 text-rose-600" />
-              <span>PDF Report (.pdf)</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          disabled={exportDisabled}
+          startIcon={<IconDownload />}
+          onClick={onExportClick}
+        >
+          {exportButtonLabel}
+        </Button>
       )}
       {onImportClick && importButtonLabel && (
         <Button

@@ -359,3 +359,15 @@ export async function exportLiabilityLedger(
   });
   return response.data;
 }
+
+export async function exportLiabilityPersonWiseReport(
+  params: Record<string, unknown> = {},
+): Promise<Blob> {
+  const response = await apiClient.get("/liability/reports/person-wise/export", {
+    params: {
+      viewMode: toOptionalParam(str(params, "viewMode")) || "platform",
+    },
+    responseType: "blob",
+  });
+  return response.data;
+}

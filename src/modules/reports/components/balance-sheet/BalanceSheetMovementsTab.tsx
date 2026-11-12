@@ -269,8 +269,6 @@ export function BalanceSheetMovementsTab({
               status: activeStatus || undefined,
               bankId: activeBankId || undefined,
               search: activeSearch || undefined,
-              page: 1,
-              pageSize: 5000,
             })
           }
           className="h-8 text-xs"
